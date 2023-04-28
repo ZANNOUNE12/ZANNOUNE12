@@ -1,27 +1,24 @@
--},
-    {
-      "voice_id": "p2x8792QjwEYLAziNVNp",
-      "name": "MY",
-      "samples": null,
-      "category": "generated",
-      "fine_tuning": {
-        "model_id": null,
-        "is_allowed_to_fine_tune": false,
-        "fine_tuning_requested": false,
-        "finetuning_state": "not_started",
-        "verification_attempts": null,
-        "verification_failures": [],
-        "verification_attempts_count": 0,
-        "slice_ids": null
-      },
-      "labels": {
-        "accent": "british",
-        "age": "young",
-        "gender": "male"
-      },
-      "description": "",
-      "preview_url": "https://storage.googleapis.com/eleven-public-prod/uNXEz8p9iVQzmm3ZZas8Em9vbFb2/voices/p2x8792QjwEYLAziNVNp/01a849b4-6bc5-4150-a592-c1d5f9b9521e.mp3",
-      "available_for_tiers": [],
-      "settings": null
-    },
-    {
+import requests
+
+CHUNK_SIZE = 1024
+url = "https://api.elevenlabs.io/v1/text-to-speech/<p2x8792QjwEYLAziNVNp>"
+
+headers = {
+  "Accept": "audio/mpeg",
+  "Content-Type": "application/json",
+  "xi-api-key": "<b6e99437497b342238657ae485b49551>"
+}
+
+data = {
+  "text": "Some very long text to be read by the voice",
+  "voice_settings": {
+    "stability": 0,
+    "similarity_boost": 0
+  }
+}
+
+response = requests.post(url, json=data, headers=headers)
+with open('output.mp3', 'wb') as f:
+    for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
+        if chunk:
+            f.write(chunk)
